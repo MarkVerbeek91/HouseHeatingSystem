@@ -23,7 +23,12 @@ classdef room
         error('Temperature not numeric value'); 
       end
       if isnumeric(Temperature_desired) 
-        obj.temperature_desired = Temperature_desired; 
+        if size(Temperature_desired,1) == 1
+          obj.temperature_desired = Temperature_desired; 
+        else
+          obj.temperature_desired = repelem(Temperature_desired(2,:), ...
+                                           [diff(Temperature_desired(1,:)), 1]);
+        end
       else
         error('Temperature not numeric value'); 
       end
@@ -32,6 +37,19 @@ classdef room
       fprintf('Roomname            : %s\n', obj.name);
       fprintf('Current temperature : %d\n', obj.temperature);
       fprintf('Desired temperature : %d\n', obj.temperature_desired);
+    end
+    function tmp =  return_temp(obj)
+      tmp = obj.temperature;
+    end
+    function tmp = return_temp_des(obj, ii)
+      if size(obj.temperature_desired,2) == 25
+        tmp = obj.temperature_desired(ii);
+      else
+        tmp = obj.temperature_desired;
+      end
+    end
+    function tmp = return_name(obj)
+      tmp = obj.name;
     end
     
   end
